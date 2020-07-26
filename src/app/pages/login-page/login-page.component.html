@@ -1,31 +1,41 @@
-<div class="card">
-  <form (submit)="login()">
-    <div class="form-control">
-      <label for="identifier">
-        Email or Username
-        <input
-          type="text"
-          name="identifier"
-          id="identifier"
-          [(ngModel)]="form.identifier"
-        />
-      </label>
-    </div>
+<mat-grid-list cols="3">
+  <mat-grid-tile> </mat-grid-tile>
 
-    <div class="form-control">
-      <label for="password">
-        Password
-        <input
-          type="password"
-          name="password"
-          id="password"
-          [(ngModel)]="form.password"
-        />
-      </label>
-    </div>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-title>Login</mat-card-title>
 
-    <div class="form-actions">
-      <button class="btn" type="submit" [disabled] = "isLoading"> {{isLoading ? 'Loading...' : 'Login'}} </button>
-    </div>
-  </form>
-</div>
+      <form [formGroup]="loginForm" (ngSubmit) = "login()">
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Username/Email</mat-label>
+            <input matInput type="text" formControlName="identifier" />
+            <mat-error *ngIf = "identifierErrors && identifierErrors.required">*This field is required</mat-error>
+            <mat-error *ngIf = "identifierErrors && identifierErrors.minlength">*Minimum {{identifierErrors.minlength.requiredLength}} characters</mat-error>
+            <button mat-icon-button matSuffix type="button"><mat-icon matSuffix color="primary">account_circle</mat-icon></button>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" />
+            <mat-error *ngIf = "passwordErrors && passwordErrors.required">*This field is required</mat-error>
+            <mat-error *ngIf = "passwordErrors && passwordErrors.minlength">*Minimum {{passwordErrors.minlength.requiredLength}} characters!</mat-error>
+            <button mat-icon-button matSuffix type="button" (click) = "isPasswordVisible = !isPasswordVisible">
+              <mat-icon  color="primary">{{isPasswordVisible ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <button type="submit" mat-raised-button color="primary">
+            <span>Login</span>
+            <mat-icon>lock</mat-icon>
+          </button>
+        </p>
+      </form>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile> </mat-grid-tile>
+</mat-grid-list>
